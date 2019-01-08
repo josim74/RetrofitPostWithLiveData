@@ -6,20 +6,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import josim74.github.com.retrofitpost_concepteliasvai.Api;
-import josim74.github.com.retrofitpost_concepteliasvai.ApiClient;
+import josim74.github.com.retrofitpost_concepteliasvai.rest.Api;
 import josim74.github.com.retrofitpost_concepteliasvai.R;
 import josim74.github.com.retrofitpost_concepteliasvai.model.Post;
 import josim74.github.com.retrofitpost_concepteliasvai.viewmodel.UserViewModel;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "SEND_POST";
@@ -42,24 +37,29 @@ public class MainActivity extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String title = titleEt.getText().toString().trim();
-                String body = bodyEt.getText().toString().trim();
-                if(!TextUtils.isEmpty(title) && !TextUtils.isEmpty(body)) {
-                    //sendPost(title, body);
-                }
+                    doSearch();
             }
         });
 
-
-        // Create the observer which updates the UI.
-        final Observer<String> nameObserver = new Observer<String>() {
+        userViewModel.getPostMutableLiveData().observe(this, new Observer<Post>() {
             @Override
-            public void onChanged(@Nullable final String newName) {
-                // Update the UI, in this case, a TextView.
-                //mNameTextView.setText(newName);
+            public void onChanged(@Nullable Post post) {
+                mResponseTv.setText(post.getId()+post.getUserId()+post.getTitle()+post.getBody());
             }
-        };
-        userViewModel.getPostMutableLiveData().observe(this, nameObserver);
+        });
+    }
+
+    private void doSearch() {
+        String title = titleEt.getText().toString().trim();
+        String body = bodyEt.getText().toString().trim();
+        if(!TextUtils.isEmpty(title) && !TextUtils.isEmpty(body)) {
+            Post post = new Post();
+            post.setTitle(title);
+            post.setBody(body);
+            post.setId(101);
+            post.setUserId(1);
+            userViewModel.savePost(post);
+        }
     }
 
     private void initView() {
@@ -67,12 +67,5 @@ public class MainActivity extends AppCompatActivity {
         bodyEt = findViewById(R.id.et_body);
         submitBtn = findViewById(R.id.btn_submit);
         mResponseTv = findViewById(R.id.tv_response);
-    }
-
-    public void showResponse(String response) {
-        if(mResponseTv.getVisibility() == View.GONE) {
-            mResponseTv.setVisibility(View.VISIBLE);
-        }
-        mResponseTv.setText(response);
     }
 }

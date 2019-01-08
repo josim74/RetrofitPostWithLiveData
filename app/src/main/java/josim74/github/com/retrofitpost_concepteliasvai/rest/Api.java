@@ -1,4 +1,4 @@
-package josim74.github.com.retrofitpost_concepteliasvai;
+package josim74.github.com.retrofitpost_concepteliasvai.rest;
 
 import josim74.github.com.retrofitpost_concepteliasvai.model.Post;
 import retrofit2.Call;
@@ -13,3 +13,4 @@ public interface Api {
                         @Field("body") String body,
                         @Field("userId") long userId);
 }
+

@@ -1,4 +1,4 @@
-package josim74.github.com.retrofitpost_concepteliasvai;
+package josim74.github.com.retrofitpost_concepteliasvai.rest;
 
 import android.support.annotation.Nullable;
 
@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
+import josim74.github.com.retrofitpost_concepteliasvai.UtilsUrls;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
